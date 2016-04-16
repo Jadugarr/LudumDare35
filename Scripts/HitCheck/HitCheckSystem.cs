@@ -7,6 +7,8 @@ public class HitCheckSystem : MonoBehaviour
 	public GameObject crosshair;
 
 	private EventManager eventManager = EventManager.Instance;
+	private WeaknessMap weaknessMap = WeaknessMap.Instance;
+	private ActiveMonsterModel activeMonsterModel = ActiveMonsterModel.Instance;
 
 	void Awake()
 	{
@@ -16,6 +18,11 @@ public class HitCheckSystem : MonoBehaviour
 	private void AddEventListeners()
 	{
 		eventManager.RegisterForEvent (EventTypes.CheckHit, OnCheckHit);
+	}
+
+	private void RemoveEventListeners()
+	{
+		eventManager.RemoveFromEvent (EventTypes.CheckHit, OnCheckHit);
 	}
 
 	public GameObject GetHitObject()
@@ -43,16 +50,23 @@ public class HitCheckSystem : MonoBehaviour
 
 	private void OnCheckHit(IEvent evt)
 	{
+		CheckHitEvent evtArgs = (CheckHitEvent)evt;
 		GameObject hitObject = GetHitObject ();
 
-		if(hitObject)
+		if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster &&
+			this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
 		{
-			eventManager.FireEvent (EventTypes.ObjectHit, new ObjectHitEvent (hitObject));
+			eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
 		}
 	}
 
 	void Update()
 	{
 		DebugHitCheck ();
+	}
+
+	void OnDestroy()
+	{
+		RemoveEventListeners ();
 	}
 }

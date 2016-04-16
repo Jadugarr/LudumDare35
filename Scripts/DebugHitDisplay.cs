@@ -39,6 +39,12 @@ public class DebugHitDisplay : MonoBehaviour {
 		eventManager.RegisterForEvent (EventTypes.CheckHit, OnCheckHit);
 	}
 
+	private void RemoveEventListeners()
+	{
+		eventManager.RemoveFromEvent (EventTypes.DebugObjectHit, OnDebugObjectHit);
+		eventManager.RemoveFromEvent (EventTypes.CheckHit, OnCheckHit);
+	}
+
 	private void OnDebugObjectHit(IEvent evtArgs)
 	{
 		if(this.hitTiming == false)
@@ -76,5 +82,10 @@ public class DebugHitDisplay : MonoBehaviour {
 		this.renderer.color = neutralColor;
 		this.hitTiming = false;
 		this.hitTimer = 0f;
+	}
+
+	void OnDestroy()
+	{
+		RemoveEventListeners ();
 	}
 }

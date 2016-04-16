@@ -19,6 +19,11 @@ public class DeathSystem : MonoBehaviour
 		eventManager.RegisterForEvent (EventTypes.KillMonster, OnKillMonster);
 	}
 
+	private void RemoveEventListeners()
+	{
+		eventManager.RemoveFromEvent (EventTypes.KillMonster, OnKillMonster);
+	}
+
 	private void OnKillMonster(IEvent evtArgs)
 	{
 		KillMonsterEvent evt = (KillMonsterEvent)evtArgs;
@@ -30,5 +35,10 @@ public class DeathSystem : MonoBehaviour
 	{
 		eventManager.FireEvent (EventTypes.MonsterKilled, new MonsterKilledEvent(enemy));
 		DestroyObject (enemy);
+	}
+
+	private void OnDestroy()
+	{
+		RemoveEventListeners ();
 	}
 }

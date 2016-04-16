@@ -12,10 +12,10 @@ public class MonsterSpawnSystem : MonoBehaviour
 	public float monsterSpeed;
 
 	private EventManager eventManager = EventManager.Instance;
+	private ActiveMonsterModel activeMonsterModel = ActiveMonsterModel.Instance;
 	private List<GameObject> currentlySpawnedMonsters = new List<GameObject>();
 	private bool spawningActive = true;
 	private float currentSpawnTime = 0f;
-	private GameObject currentActiveMonster;
 
 	private MonsterSpawnSystem(){
 	}
@@ -67,7 +67,12 @@ public class MonsterSpawnSystem : MonoBehaviour
 	{
 		eventManager.RegisterForEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
-		eventManager.RegisterForEvent (EventTypes.ObjectHit, OnObjectHit);
+	}
+
+	private void RemoveEventListeners()
+	{
+		eventManager.RemoveFromEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
+		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 	}
 
 	private void OnMonsterReachedDestination(IEvent evtArgs)
@@ -75,7 +80,7 @@ public class MonsterSpawnSystem : MonoBehaviour
 		spawningActive = false;
 
 		MonsterReachedDestinationEvent evt = (MonsterReachedDestinationEvent)evtArgs;
-		this.currentActiveMonster = evt.Monster;
+		this.activeMonsterModel.activeMonster = evt.Monster;
 	}
 
 	private void OnMonsterKilled(IEvent evtArgs)
@@ -84,16 +89,11 @@ public class MonsterSpawnSystem : MonoBehaviour
 
 		MonsterKilledEvent evt = (MonsterKilledEvent)evtArgs;
 		this.currentlySpawnedMonsters.Remove (evt.KilledMonster);
-		this.currentActiveMonster = null;
+		this.activeMonsterModel.activeMonster = null;
 	}
 
-	private void OnObjectHit(IEvent evtArgs)
+	void OnDestroy()
 	{
-		ObjectHitEvent evt = (ObjectHitEvent)evtArgs;
-
-		if(evt.HitObject.transform.parent.gameObject == this.currentActiveMonster)
-		{
-			eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.currentActiveMonster));
-		}
+		RemoveEventListeners ();
 	}
 }
