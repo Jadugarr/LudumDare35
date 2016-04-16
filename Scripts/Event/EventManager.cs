@@ -4,7 +4,12 @@ using System.Collections.Generic;
 
 public enum EventTypes
 {
-	
+	ObjectHit, 
+	DebugObjectHit,
+	CheckHit,
+	MonsterReachedDestination,
+	MonsterKilled,
+	KillMonster
 }
 
 /// <summary>
