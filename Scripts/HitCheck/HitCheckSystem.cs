@@ -6,10 +6,13 @@ public class HitCheckSystem : MonoBehaviour
 {
 	public GameObject aimObject;
 	public GameObject crosshair;
+	public GameObject hitmarker;
 
 	private EventManager eventManager = EventManager.Instance;
 	private WeaknessMap weaknessMap = WeaknessMap.Instance;
 	private ActiveMonsterModel activeMonsterModel = ActiveMonsterModel.Instance;
+
+	private GameObject activeHitMarker;
 
 	void Awake()
 	{
@@ -28,45 +31,50 @@ public class HitCheckSystem : MonoBehaviour
 		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 	}
 
-	public GameObject GetHitObject()
+	public RaycastHit2D GetHitObject()
 	{
-		RaycastHit2D hitObject = Physics2D.Raycast (this.crosshair.transform.position, this.crosshair.transform.right, 10f,LayerMask.GetMask("Weakpoints"));
-
-		if(hitObject)
-		{
-			return hitObject.collider.gameObject;
-		}
-
-		return null;
+		return Physics2D.Raycast (this.crosshair.transform.position, this.crosshair.transform.right, 10f,LayerMask.GetMask("Weakpoints"));
 	}
 
 	private void DebugHitCheck()
 	{
-		GameObject hitObject = GetHitObject ();
-
-		if(hitObject)
+		if (GetHitObject ()) 
 		{
-			Debug.Log ("Hit something");
+			GameObject hitObject = GetHitObject ().collider.gameObject;
+
+			if(hitObject)
+			{
+				Debug.Log ("Hit something");
+			}
+			eventManager.FireEvent (EventTypes.DebugObjectHit, new ObjectHitEvent (hitObject));
 		}
-		eventManager.FireEvent (EventTypes.DebugObjectHit, new ObjectHitEvent (hitObject));
 	}
 
 	private void OnCheckHit(IEvent evt)
 	{
 		CheckHitEvent evtArgs = (CheckHitEvent)evt;
-		GameObject hitObject = GetHitObject ();
-
-		if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster &&
-			this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
+		RaycastHit2D raycastHit = GetHitObject ();
+		if(raycastHit)
 		{
-			eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
-			this.aimObject.SetActive (false);
+			GameObject hitObject = raycastHit.collider.gameObject;
+
+			if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster &&
+				this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
+			{
+				this.activeHitMarker = (GameObject)Instantiate (hitmarker, raycastHit.point, hitmarker.transform.rotation);
+				eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
+				this.aimObject.SetActive (false);
+			}
 		}
 	}
 
 	private void OnMonsterKilled(IEvent evt)
 	{
 		this.aimObject.SetActive (true);
+		if(	this.activeHitMarker != null)
+		{
+			DestroyObject (this.activeHitMarker);
+		}
 	}
 
 	void Update()
