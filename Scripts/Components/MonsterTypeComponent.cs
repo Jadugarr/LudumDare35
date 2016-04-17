@@ -7,7 +7,15 @@ namespace AssemblyCSharp
 	{
 		Mandible,
 		Weeknees,
-		LeviNomster
+		LeviNomster,
+		ScibbLegdai,
+		MMMs,
+		MM,
+		M,
+		NottaReeskin,
+		JohnWig,
+		HarveyeEyetel,
+		Hoarsethrot
 	}
 
 	public class MonsterTypeComponent : MonoBehaviour

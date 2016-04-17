@@ -29,7 +29,15 @@ public class WeaknessMap
 		this.weaknessMap = new Dictionary<MonsterType, List<WeaponType>> () {
 			{ MonsterType.Mandible, new List<WeaponType> (){ WeaponType.Elephant } },
 			{MonsterType.Weeknees, new List<WeaponType>(){WeaponType.Elephant, WeaponType.Mantis}},
-			{MonsterType.LeviNomster, new List<WeaponType>(){WeaponType.Crab}}
+			{MonsterType.LeviNomster, new List<WeaponType>(){WeaponType.Crab}},
+			{MonsterType.ScibbLegdai, new List<WeaponType>(){WeaponType.Crab, WeaponType.Mantis}},
+			{MonsterType.HarveyeEyetel, new List<WeaponType>(){WeaponType.Crab, WeaponType.Mantis}},
+			{MonsterType.Hoarsethrot, new List<WeaponType>(){WeaponType.Crab, WeaponType.Elephant, WeaponType.Mantis}},
+			{MonsterType.NottaReeskin, new List<WeaponType>(){WeaponType.Elephant}},
+			{MonsterType.JohnWig, new List<WeaponType>(){WeaponType.Mantis}},
+			{MonsterType.M, new List<WeaponType>(){WeaponType.Crab}},
+			{MonsterType.MM, new List<WeaponType>(){WeaponType.Elephant}},
+			{MonsterType.MMMs, new List<WeaponType>(){WeaponType.Mantis}}
 		};
 	}
 
