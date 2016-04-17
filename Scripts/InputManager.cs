@@ -40,15 +40,15 @@ public class InputManager : MonoBehaviour {
 
 	private void CheckInput()
 	{
-		if(Input.GetKeyDown(KeyCode.Alpha1) == true)
+		if(Input.GetButtonDown("Fire3") == true)
 		{
 			eventManager.FireEvent (EventTypes.CheckHit, new CheckHitEvent(WeaponType.Crab));
 		}
-		if(Input.GetKeyDown(KeyCode.Alpha2) == true)
+		if(Input.GetButtonDown("Fire2") == true)
 		{
 			eventManager.FireEvent (EventTypes.CheckHit, new CheckHitEvent(WeaponType.Elephant));
 		}
-		if(Input.GetKeyDown(KeyCode.Alpha3) == true)
+		if(Input.GetButtonDown("Fire1") == true)
 		{
 			eventManager.FireEvent (EventTypes.CheckHit, new CheckHitEvent(WeaponType.Mantis));
 		}

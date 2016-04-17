@@ -7,10 +7,12 @@ public class HitCheckSystem : MonoBehaviour
 	public GameObject aimObject;
 	public GameObject crosshair;
 	public GameObject hitmarker;
+	public float hitmarkerTimer;
 
 	private EventManager eventManager = EventManager.Instance;
 	private WeaknessMap weaknessMap = WeaknessMap.Instance;
 	private ActiveMonsterModel activeMonsterModel = ActiveMonsterModel.Instance;
+	private float currentHitmarkerTime = 0f;
 
 	private GameObject activeHitMarker;
 
@@ -50,6 +52,18 @@ public class HitCheckSystem : MonoBehaviour
 		}
 	}
 
+	private void CheckHitMarker(float deltaTime)
+	{
+		if(this.activeHitMarker != null)
+		{
+			this.currentHitmarkerTime += deltaTime;
+			if(this.currentHitmarkerTime >= this.hitmarkerTimer)
+			{
+				DestroyHitMarker ();
+			}
+		}
+	}
+
 	private void OnCheckHit(IEvent evt)
 	{
 		CheckHitEvent evtArgs = (CheckHitEvent)evt;
@@ -58,12 +72,15 @@ public class HitCheckSystem : MonoBehaviour
 		{
 			GameObject hitObject = raycastHit.collider.gameObject;
 
-			if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster &&
-				this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
+			if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster)
 			{
+				DestroyHitMarker ();
 				this.activeHitMarker = (GameObject)Instantiate (hitmarker, raycastHit.point, hitmarker.transform.rotation);
-				eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
-				this.aimObject.SetActive (false);
+				if(this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
+				{
+					eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
+					this.aimObject.SetActive (false);
+				}
 			}
 		}
 	}
@@ -71,15 +88,22 @@ public class HitCheckSystem : MonoBehaviour
 	private void OnMonsterKilled(IEvent evt)
 	{
 		this.aimObject.SetActive (true);
+		DestroyHitMarker ();
+	}
+
+	private void DestroyHitMarker()
+	{
 		if(	this.activeHitMarker != null)
 		{
 			DestroyObject (this.activeHitMarker);
+			this.currentHitmarkerTime = 0f;
 		}
 	}
 
 	void Update()
 	{
 		DebugHitCheck ();
+		CheckHitMarker (Time.deltaTime);
 	}
 
 	void OnDestroy()
