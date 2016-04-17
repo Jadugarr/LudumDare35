@@ -6,9 +6,36 @@ public class InputManager : MonoBehaviour {
 
 	private EventManager eventManager = EventManager.Instance;
 
+	private bool active = true;
+
+	void Awake()
+	{
+		AddEventListeners ();
+	}
+
 	// Update is called once per frame
 	void Update () {
-		CheckInput ();
+		if(active)
+		{
+			CheckInput ();
+		}
+	}
+
+	void OnDestroy()
+	{
+		RemoveEventListeners ();
+	}
+
+	private void AddEventListeners()
+	{
+		eventManager.RegisterForEvent (EventTypes.KillMonster, OnKillMonster);
+		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
+	}
+
+	private void RemoveEventListeners()
+	{
+		eventManager.RemoveFromEvent (EventTypes.KillMonster, OnKillMonster);
+		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 	}
 
 	private void CheckInput()
@@ -25,5 +52,15 @@ public class InputManager : MonoBehaviour {
 		{
 			eventManager.FireEvent (EventTypes.CheckHit, new CheckHitEvent(WeaponType.Mantis));
 		}
+	}
+
+	private void OnKillMonster(IEvent evt)
+	{
+		this.active = false;
+	}
+
+	private void OnMonsterKilled(IEvent evt)
+	{
+		this.active = true;
 	}
 }

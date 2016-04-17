@@ -25,12 +25,14 @@ public class MonsterText : MonoBehaviour
 	{
 		eventManager.RegisterForEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
+		eventManager.RegisterForEvent (EventTypes.KillMonster, OnKillMonster);
 	}
 
 	private void RemoveEventListeners()
 	{
 		eventManager.RemoveFromEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
+		eventManager.RemoveFromEvent (EventTypes.KillMonster, OnKillMonster);
 	}
 
 	private void OnMonsterReachedDestination(IEvent evt)
@@ -45,10 +47,13 @@ public class MonsterText : MonoBehaviour
 
 	private void OnMonsterKilled(IEvent evt)
 	{
-		MonsterKilledEvent evtArgs = (MonsterKilledEvent)evt;
-		canvasGroup.alpha = 1;
+		canvasGroup.alpha = 0;
+	}
 
-		this.textField.text = this.monsterTextModel.GetMonsterTextVO(evtArgs.KilledMonster.GetComponent<MonsterTypeComponent>().monsterType).GetDefeatLine;
+	private void OnKillMonster(IEvent evt)
+	{
+		KillMonsterEvent evtArgs = (KillMonsterEvent)evt;
+		this.textField.text = this.monsterTextModel.GetMonsterTextVO(evtArgs.Monster.GetComponent<MonsterTypeComponent>().monsterType).GetDefeatLine;
 	}
 
 	void OnDestroy()

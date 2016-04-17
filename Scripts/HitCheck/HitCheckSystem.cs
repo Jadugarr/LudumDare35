@@ -4,6 +4,7 @@ using AssemblyCSharp;
 
 public class HitCheckSystem : MonoBehaviour 
 {
+	public GameObject aimObject;
 	public GameObject crosshair;
 
 	private EventManager eventManager = EventManager.Instance;
@@ -18,11 +19,13 @@ public class HitCheckSystem : MonoBehaviour
 	private void AddEventListeners()
 	{
 		eventManager.RegisterForEvent (EventTypes.CheckHit, OnCheckHit);
+		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 	}
 
 	private void RemoveEventListeners()
 	{
 		eventManager.RemoveFromEvent (EventTypes.CheckHit, OnCheckHit);
+		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 	}
 
 	public GameObject GetHitObject()
@@ -57,7 +60,13 @@ public class HitCheckSystem : MonoBehaviour
 			this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
 		{
 			eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
+			this.aimObject.SetActive (false);
 		}
+	}
+
+	private void OnMonsterKilled(IEvent evt)
+	{
+		this.aimObject.SetActive (true);
 	}
 
 	void Update()
