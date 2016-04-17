@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MonsterTimer : MonoBehaviour 
 {
@@ -29,7 +30,11 @@ public class MonsterTimer : MonoBehaviour
 		if(monsterPresent)
 		{
 			this.currentTimer -= Time.deltaTime;
-			ShowTime ();
+			if (this.currentTimer <= 0) {
+				SceneManager.LoadScene ("GameOver");
+			} else {
+				ShowTime ();
+			}
 		}
 	}
 
