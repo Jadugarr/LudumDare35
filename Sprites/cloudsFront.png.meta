@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 5b1851949f240b6479e8ef2e464989af
-timeCreated: 1461012135
+guid: b9f2e789693c4364f8c3b54fffec87d8
+timeCreated: 1461010028
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: cloudsFront_0
+    21300002: cloudsFront_1
+    21300004: cloudsFront_2
+    21300006: cloudsFront_3
+    21300008: cloudsFront_4
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -29,27 +34,134 @@ TextureImporter:
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
-    aniso: -1
+    filterMode: 0
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
-  buildTargetSettings: []
+  spritePixelsToUnits: 64
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: Web
+    maxTextureSize: 2048
+    textureFormat: -3
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -3
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -3
+    compressionQuality: 50
+    allowsAlphaSplitting: 0
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: cloudsFront_0
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 8
+        width: 95
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.5, y: 17.5}
+        - {x: -47.5, y: 13.5}
+        - {x: -47.5, y: -17.5}
+        - {x: 36.5, y: -17.5}
+        - {x: 47.5, y: -11.5}
+        - {x: 47.5, y: -5.5}
+        - {x: 22.5, y: 17.5}
+    - name: cloudsFront_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 23
+        width: 72
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -36, y: -13}
+        - {x: -34, y: -16}
+        - {x: 36, y: -16}
+        - {x: 36, y: 5}
+        - {x: 35, y: 9}
+        - {x: 24, y: 16}
+        - {x: -27, y: 16}
+        - {x: -36, y: 12}
+    - name: cloudsFront_2
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 16
+        width: 95
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.5, y: 17.5}
+        - {x: -47.5, y: 13.5}
+        - {x: -47.5, y: -17.5}
+        - {x: 36.5, y: -17.5}
+        - {x: 47.5, y: -11.5}
+        - {x: 47.5, y: -5.5}
+        - {x: 22.5, y: 17.5}
+    - name: cloudsFront_3
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 5
+        width: 72
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -36, y: -13}
+        - {x: -34, y: -16}
+        - {x: 36, y: -16}
+        - {x: 36, y: 5}
+        - {x: 35, y: 9}
+        - {x: 24, y: 16}
+        - {x: -27, y: 16}
+        - {x: -36, y: 12}
+    - name: cloudsFront_4
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 13
+        width: 95
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.5, y: 17.5}
+        - {x: -47.5, y: 13.5}
+        - {x: -47.5, y: -17.5}
+        - {x: 36.5, y: -17.5}
+        - {x: 47.5, y: -11.5}
+        - {x: 47.5, y: -5.5}
+        - {x: 22.5, y: 17.5}
     outline: []
   spritePackingTag: 
   userData: 
