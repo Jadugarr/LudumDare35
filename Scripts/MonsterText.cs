@@ -26,6 +26,7 @@ public class MonsterText : MonoBehaviour
 		eventManager.RegisterForEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 		eventManager.RegisterForEvent (EventTypes.KillMonster, OnKillMonster);
+		eventManager.RegisterForEvent (EventTypes.MonsterMissed, OnMonsterMissed);
 	}
 
 	private void RemoveEventListeners()
@@ -33,6 +34,7 @@ public class MonsterText : MonoBehaviour
 		eventManager.RemoveFromEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
 		eventManager.RemoveFromEvent (EventTypes.KillMonster, OnKillMonster);
+		eventManager.RemoveFromEvent (EventTypes.MonsterMissed, OnMonsterMissed);
 	}
 
 	private void OnMonsterReachedDestination(IEvent evt)
@@ -40,9 +42,27 @@ public class MonsterText : MonoBehaviour
 		MonsterReachedDestinationEvent evtArgs = (MonsterReachedDestinationEvent)evt;
 		canvasGroup.alpha = 1;
 
-		IMonsterTextVO textVO = this.monsterTextModel.GetMonsterTextVO (evtArgs.Monster.GetComponent<MonsterTypeComponent>().monsterType);
-		int textIndex = Random.Range (0, textVO.GetStandardLines.Count);
-		this.textField.text = textVO.GetStandardLines [textIndex];
+		SetStandardText (evtArgs.Monster.GetComponent<MonsterTypeComponent>().monsterType);
+	}
+
+	private void OnMonsterMissed (IEvent evt)
+	{
+		MonsterMissedEvent evtArgs = (MonsterMissedEvent)evt;
+		SetStandardText (evtArgs.Monster.GetComponent<MonsterTypeComponent>().monsterType);
+	}
+
+	private void SetStandardText(MonsterType monsterType)
+	{
+		string currentText = this.textField.text;
+		string textToSet = "";
+
+		do 
+		{
+			IMonsterTextVO textVO = this.monsterTextModel.GetMonsterTextVO (monsterType);
+			int textIndex = Random.Range (0, textVO.GetStandardLines.Count);
+			textToSet = textVO.GetStandardLines [textIndex];
+		} while(currentText == textToSet);
+		this.textField.text = textToSet;
 	}
 
 	private void OnMonsterKilled(IEvent evt)

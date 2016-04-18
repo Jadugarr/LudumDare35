@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AssemblyCSharp;
+using System.Collections.Generic;
 
 public class HitCheckSystem : MonoBehaviour 
 {
@@ -8,6 +9,10 @@ public class HitCheckSystem : MonoBehaviour
 	public GameObject crosshair;
 	public GameObject hitmarker;
 	public float hitmarkerTimer;
+	public List<AudioClip> markerHitClips;
+	public AudioClip monsterWoundedClip;
+	public AudioClip missClip;
+	public AudioSource source;
 
 	private EventManager eventManager = EventManager.Instance;
 	private WeaknessMap weaknessMap = WeaknessMap.Instance;
@@ -68,24 +73,36 @@ public class HitCheckSystem : MonoBehaviour
 	{
 		CheckHitEvent evtArgs = (CheckHitEvent)evt;
 		RaycastHit2D raycastHit = GetHitObject ();
-		if(raycastHit)
-		{
-			GameObject hitObject = raycastHit.collider.gameObject;
+		if (raycastHit) {
+				GameObject hitObject = raycastHit.collider.gameObject;
 
-			if(hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster)
-			{
-				DestroyHitMarker ();
-				this.activeHitMarker = (GameObject)Instantiate (hitmarker, raycastHit.point, hitmarker.transform.rotation);
-				if(this.weaknessMap.IsMonsterWeakAgainstWeaponType(this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent>().monsterType, evtArgs.WeaponType) == true)
-				{
-					eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
-					this.aimObject.SetActive (false);
+				if (hitObject != null && hitObject.transform.parent.gameObject == this.activeMonsterModel.activeMonster) {
+					DestroyHitMarker ();
+					this.activeHitMarker = (GameObject)Instantiate (hitmarker, raycastHit.point, hitmarker.transform.rotation);
+					if (this.weaknessMap.IsMonsterWeakAgainstWeaponType (this.activeMonsterModel.activeMonster.GetComponent<MonsterTypeComponent> ().monsterType, evtArgs.WeaponType) == true) {
+						eventManager.FireEvent (EventTypes.KillMonster, new KillMonsterEvent (this.activeMonsterModel.activeMonster));
+						this.aimObject.SetActive (false);
+						this.source.clip = this.monsterWoundedClip;
+						this.source.Play ();
+					} else {
+						this.source.clip = this.markerHitClips [Random.Range (0, this.markerHitClips.Count)];
+						this.source.Play ();
+						if (this.activeMonsterModel.activeMonster != null) {
+							this.eventManager.FireEvent (EventTypes.MonsterMissed, new MonsterMissedEvent (this.activeMonsterModel.activeMonster));
+						}
+					}
+				}
+			} else {
+				this.source.clip = this.missClip;
+				this.source.Play ();
+				if (this.activeMonsterModel.activeMonster != null) {
+					this.eventManager.FireEvent (EventTypes.MonsterMissed, new MonsterMissedEvent (this.activeMonsterModel.activeMonster));
 				}
 			}
 		}
-	}
 
-	private void OnMonsterKilled(IEvent evt)
+
+		private void OnMonsterKilled(IEvent evt)
 	{
 		this.aimObject.SetActive (true);
 		DestroyHitMarker ();
