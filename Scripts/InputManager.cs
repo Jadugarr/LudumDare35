@@ -81,6 +81,7 @@ public class InputManager : MonoBehaviour {
 	private void OnKillMonster(IEvent evt)
 	{
 		this.active = false;
+        this.hitDelayed = false;
 	}
 
 	private void OnMonsterReachedDestination(IEvent evt)
