@@ -5,9 +5,16 @@ using AssemblyCSharp;
 
 public class PlayerSpriteSwitcher : MonoBehaviour 
 {
+	public AimRotation RotationScript;
+
 	public Sprite crabSprite;
 	public Sprite elephantSprite;
 	public Sprite mantisSprite;
+
+	public Sprite crabSpriteDown;
+	public Sprite elephantSpriteDown;
+	public Sprite mantisSpriteDown;
+
 	public Sprite neutralSprite;
 	public float fightStanceTimer;
 	public SpriteRenderer spriteRenderer;
@@ -15,7 +22,9 @@ public class PlayerSpriteSwitcher : MonoBehaviour
 	private float currentStanceTime = 0f;
 	private bool inFightingStance = false;
 	private EventManager eventManager = EventManager.Instance;
+
 	private Dictionary<WeaponType, Sprite> spriteMap;
+	private Dictionary<WeaponType, Sprite> spriteMapDown;
 
 	void Awake()
 	{
@@ -29,6 +38,13 @@ public class PlayerSpriteSwitcher : MonoBehaviour
 			{WeaponType.Crab, this.crabSprite},
 			{WeaponType.Elephant, this.elephantSprite},
 			{WeaponType.Mantis, this.mantisSprite}
+		};
+
+		this.spriteMapDown = new Dictionary<WeaponType, Sprite> () 
+		{
+			{WeaponType.Crab, this.crabSpriteDown},
+			{WeaponType.Elephant, this.elephantSpriteDown},
+			{WeaponType.Mantis, this.mantisSpriteDown}
 		};
 	}
 
@@ -67,9 +83,19 @@ public class PlayerSpriteSwitcher : MonoBehaviour
 		CheckHitEvent evt = (CheckHitEvent)evtArgs;
 		Sprite attackSprite;
 
-		if(this.spriteMap.TryGetValue(evt.WeaponType, out attackSprite))
+		if(RotationScript.IsLookingDown)
 		{
-			this.spriteRenderer.sprite = attackSprite;
+			if(this.spriteMapDown.TryGetValue(evt.WeaponType, out attackSprite))
+			{
+				this.spriteRenderer.sprite = attackSprite;
+			}
+		}
+		else
+		{
+			if(this.spriteMap.TryGetValue(evt.WeaponType, out attackSprite))
+			{
+				this.spriteRenderer.sprite = attackSprite;
+			}
 		}
 
 		this.inFightingStance = true;

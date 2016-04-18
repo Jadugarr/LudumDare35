@@ -6,6 +6,7 @@ public class AimRotation : MonoBehaviour
 	public float fullTurnTime;
 	float rotation;
 	public float maxAngle;
+	private bool _isLookingDown;
 
 	private void Update()
 	{
@@ -17,8 +18,16 @@ public class AimRotation : MonoBehaviour
 			(isMovingDown)
 			? -maxAngle + ( 2f * maxAngle * rotationFactor)
 			: maxAngle - ( 2f * maxAngle * rotationFactor);
+		
+		_isLookingDown = ((rotationFactor < 0.5) == isMovingDown); 
 
 		// todo: rotate arrow
 		this.gameObject.transform.rotation = new Quaternion(0, 0, rotation, 1);
+	}
+
+	public bool IsLookingDown{
+		get{
+			return _isLookingDown;
+		}
 	}
 }
