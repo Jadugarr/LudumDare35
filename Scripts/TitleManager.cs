@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour {
 
+	public CameraFade FadeManager;
 	public GameObject ArrowUp;
 	public GameObject ArrowDown;
 
@@ -15,7 +16,7 @@ public class TitleManager : MonoBehaviour {
 	{
 		if(Input.GetButtonDown("Fire1"))
 		{
-			SceneManager.LoadScene( isStartSelected? "Scene" : "Instructions" );
+			FadeManager.FadeOut( isStartSelected? "Scene" : "Instructions" );
 		}
 		else if(!isAxisDown && Input.GetAxisRaw("Vertical") != 0)
 		{

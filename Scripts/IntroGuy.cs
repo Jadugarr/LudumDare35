@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class IntroGuy : MonoBehaviour {
 
+	public CameraFade FadeManager;
 	public SpriteRenderer Idle;
 	public SpriteRenderer Mantis;
 	public SpriteRenderer Elephant;
@@ -103,7 +104,8 @@ public class IntroGuy : MonoBehaviour {
 		}
 		else if(state == 6 && passedTime >= NextSceneTimeStamp)
 		{
-			SceneManager.LoadScene("Title");
+			FadeManager.FadeOut("Title");
+			state++;
 		}
 	}
 
