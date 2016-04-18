@@ -48,11 +48,6 @@ public class HitCheckSystem : MonoBehaviour
 		if (GetHitObject ()) 
 		{
 			GameObject hitObject = GetHitObject ().collider.gameObject;
-
-			if(hitObject)
-			{
-				Debug.Log ("Hit something");
-			}
 			eventManager.FireEvent (EventTypes.DebugObjectHit, new ObjectHitEvent (hitObject));
 		}
 	}

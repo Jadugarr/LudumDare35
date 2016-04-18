@@ -8,10 +8,12 @@ public class MonsterTimer : MonoBehaviour
 	public CanvasGroup timerContainer;
 	public Text timerField;
 	public float startTimer;
+    public CameraFade fadeManager;
 
 	private EventManager eventManager = EventManager.Instance;
 	private float currentTimer;
 	private bool monsterPresent;
+    private bool isGameOver = false;
 
 	// Use this for initialization
 	void Start () 
@@ -31,7 +33,10 @@ public class MonsterTimer : MonoBehaviour
 		{
 			this.currentTimer -= Time.deltaTime;
 			if (this.currentTimer <= 0) {
-				SceneManager.LoadScene ("GameOver");
+                if (!isGameOver){
+                    fadeManager.FadeOut("GameOver", 1f);
+                    isGameOver = true;
+                }
 			} else {
 				ShowTime ();
 			}
