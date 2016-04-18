@@ -29,13 +29,13 @@ public class HitCheckSystem : MonoBehaviour
 	private void AddEventListeners()
 	{
 		eventManager.RegisterForEvent (EventTypes.CheckHit, OnCheckHit);
-		eventManager.RegisterForEvent (EventTypes.MonsterKilled, OnMonsterKilled);
+		eventManager.RegisterForEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 	}
 
 	private void RemoveEventListeners()
 	{
 		eventManager.RemoveFromEvent (EventTypes.CheckHit, OnCheckHit);
-		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterKilled);
+		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterReachedDestination);
 	}
 
 	public RaycastHit2D GetHitObject()
@@ -102,7 +102,7 @@ public class HitCheckSystem : MonoBehaviour
 		}
 
 
-		private void OnMonsterKilled(IEvent evt)
+		private void OnMonsterReachedDestination(IEvent evt)
 	{
 		this.aimObject.SetActive (true);
 		DestroyHitMarker ();
