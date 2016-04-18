@@ -9,8 +9,7 @@ public enum EventTypes
 	CheckHit,
 	MonsterReachedDestination,
 	MonsterKilled,
-	KillMonster,
-	MonsterMissed
+	KillMonster
 }
 
 /// <summary>
