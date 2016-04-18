@@ -62,7 +62,7 @@ public class MonsterText : MonoBehaviour
 			int textIndex = Random.Range (0, textVO.GetStandardLines.Count);
 			textToSet = textVO.GetStandardLines [textIndex];
 		} while(currentText == textToSet);
-		this.textField.text = textToSet;
+		this.textField.text = monsterType.ToString() + ": " + textToSet;
 	}
 
 	private void OnMonsterKilled(IEvent evt)
