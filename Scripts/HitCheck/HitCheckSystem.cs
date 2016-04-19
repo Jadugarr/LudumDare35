@@ -35,7 +35,7 @@ public class HitCheckSystem : MonoBehaviour
 	private void RemoveEventListeners()
 	{
 		eventManager.RemoveFromEvent (EventTypes.CheckHit, OnCheckHit);
-		eventManager.RemoveFromEvent (EventTypes.MonsterKilled, OnMonsterReachedDestination);
+		eventManager.RemoveFromEvent (EventTypes.MonsterReachedDestination, OnMonsterReachedDestination);
 	}
 
 	public RaycastHit2D GetHitObject()
