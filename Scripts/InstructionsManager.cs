@@ -16,7 +16,7 @@ public class InstructionsManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if(Time.realtimeSinceStartup > CooldownEndTime && (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3")))
+		if(Time.realtimeSinceStartup > CooldownEndTime && (Input.anyKeyDown || Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3")))
 		{
 			FadeManager.FadeOut( "Title", 1 );
 		}
